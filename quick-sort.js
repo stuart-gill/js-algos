@@ -8,31 +8,38 @@ function eSwap(arr, i, j) {
 }
 
 function pivotHelper(arr, start = 0, end = arr.length - 1) {
-  let pivot = arr[0];
-  let pivotIndex = 1;
-  // as loop moves through index, swaps elements smaller than pivot to beginning of array.
+  // pivot will always be first element in array or subarray
+  let pivot = arr[start];
+  let swapIndex = start;
+
+  // move all elements smaller than the pivot to be before all elements bigger than the pivot
   for (let i = start + 1; i <= end; i++) {
-    if (arr[i] < pivot) {
-      eSwap(arr, i, pivotIndex);
-      pivotIndex++;
+    if (pivot > arr[i]) {
+      swapIndex++;
+      eSwap(arr, swapIndex, i);
+      // check array every iteration to see whats happening
+      console.log(arr);
     }
   }
-  // now that all elements smaller than pivot are at beginning of array, we swap the pivot element with the last element that was smaller than pivot (current pivotIndex). This means that pivot element is now in its final position. Will never change index again.
-  eSwap(arr, 0, pivotIndex);
-  console.log(arr);
-  return pivotIndex;
+
+  //at this point, pivot is still arr[start], so we swap its position with that of the last element smaller than pivot
+  // after this, the pivot element will be in its final sorted position. Will not change index again.
+  eSwap(arr, start, swapIndex);
+  return swapIndex;
 }
 
 // TEST
-// console.log(pivotHelper([5, 2, 7, 3, 9, 4]));
+pivotHelper([5, 2, 7, 3, 9, 4]);
 
 // this part is confusing, because quickSort and pivotHelper BOTH take same parameters
 // note that in contrast to merge sort, I'm not assigning result of quickSort to left or right variables, just running quickSort
 function quickSort(arr, left = 0, right = arr.length - 1) {
   if (left < right) {
-    let pivot = pivotHelper(arr, left, right);
-    quickSort(arr, 0, pivot - 1);
-    quickSort(arr, pivot + 1, right);
+    let pivotIndex = pivotHelper(arr, left, right);
+    //left
+    quickSort(arr, left, pivotIndex - 1);
+    //right
+    quickSort(arr, pivotIndex + 1, right);
   }
   return arr;
 }
