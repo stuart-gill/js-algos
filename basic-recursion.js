@@ -25,3 +25,42 @@ function factorial(num) {
 
 let factorialAns = factorial(5);
 console.log(`5! = ${factorialAns}`);
+
+// recursively calculate the product of all numbers in an input array
+// productOfArray([1,2,3]) // 6
+// productOfArray([1,2,3,10]) // 60
+
+function productOfArray(arr) {
+  if (arr.length === 1) return arr[0];
+  return arr[0] * productOfArray(arr.slice(1));
+}
+
+let productAns = productOfArray([2, 4, 6, 10]);
+console.log(`the product of 2 4 6 and 10 = ${productAns}`);
+
+// Return the sum of all integers under a given input integer
+// SAMPLE INPUT/OUTPUT
+// recursiveRange(6) // 21
+// recursiveRange(10) // 55
+
+function recursiveRange(num) {
+  if (num === 1) return 1;
+  return num + recursiveRange(num - 1);
+}
+
+let sumAns = recursiveRange(5);
+console.log(`the sum of all integers 5 and under is ${sumAns}`);
+
+// Function should take in an integer and return that index of the fibonacci sequence (1,1,2,3,5,8...)
+// fib(4) // 3
+// fib(10) // 55
+// fib(28) // 317811
+// fib(35) // 9227465
+
+function fib(n) {
+  if (n <= 2) return 1;
+  return fib(n - 1) + fib(n - 2);
+}
+
+let fibAns = fib(35);
+console.log(`the 35th element of the fibonacci sequence is ${fibAns}`);
