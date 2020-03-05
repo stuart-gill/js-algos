@@ -114,7 +114,7 @@ console.log(capAns);
 // **************************************************
 
 // Nested Even Sum -- return sum of all numbers in an object which may contain nested objects
-
+// example input:
 let obj1 = {
   outer: 2,
   obj: {
@@ -126,7 +126,7 @@ let obj1 = {
     }
   }
 };
-
+// another example input:
 let obj2 = {
   a: 2,
   b: { b: 2, bb: { b: 3, bb: { b: 2 } } },
@@ -152,3 +152,6 @@ let nestedAns1 = nestedEvenSum(obj1); // 6
 let nestedAns2 = nestedEvenSum(obj2); // 10
 
 console.log([nestedAns1, nestedAns2]);
+
+// **************************************************
+// **************************************************
