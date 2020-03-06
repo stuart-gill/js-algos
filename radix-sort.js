@@ -48,9 +48,12 @@ const radix = arr => {
     // for whatever reason, Array.from will create 10 unique blank arrays
     let buckets = Array.from({ length: 10 }, () => []);
     for (let j of arr) {
+      // finds the value in the i place-- 1s or 10s or 100s or 1000s-- for each number j in array
       let digValue = getDigit(j, i);
+      // then put that number j in the corresponding bucket array (0-9)
       buckets[digValue].push(j);
     }
+    // then flatten the bucket array (concats all 0-9 arrays)
     arr = buckets.flat();
   }
   return arr;
