@@ -39,16 +39,20 @@ class SinglyLinkedList {
     // decrement length
     // assign tail to new tail
     if (this.length === 0) return undefined;
-    this.length--;
     let returnVal = this.tail;
     let penultimate = this.head;
-    let ultimate = this.head.next;
+    let ultimate = penultimate;
     while (ultimate.next) {
       penultimate = ultimate;
       ultimate = ultimate.next;
     }
     this.tail = penultimate;
     this.tail.next = null;
+    this.length--;
+    if (this.length === 0) {
+      this.head = null;
+      this.tail = null;
+    }
     return returnVal;
   }
 }
@@ -59,5 +63,9 @@ myList.push('how');
 myList.push('are');
 myList.push('you');
 console.log(myList.pop());
+console.log(myList.pop());
+console.log(myList.pop());
+console.log(myList);
+
 console.log(myList.pop());
 console.log(myList);
