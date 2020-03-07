@@ -87,8 +87,62 @@ class SinglyLinkedList {
     this.length++;
     return this;
   }
+
+  get(index) {
+    // should take in index and return the node at that index (although of course there are no indexes in singly linked lists)
+    // so, traverse list until you hit the "index" and return that node
+    if (index >= this.length || index < 0) return null;
+    let counter = 0;
+    let currentNode = this.head;
+    while (counter < index) {
+      currentNode = currentNode.next;
+      counter++;
+    }
+    return currentNode;
+  }
+
+  set(index, newValue) {
+    // accept an index and a value
+    // find the element with that index, update its value to new value
+    let selectedNode = this.get(index);
+    if (!selectedNode) return false;
+    selectedNode.value = newValue;
+    // why return true instead of returning the modified node?
+    // return true;
+    return selectedNode;
+  }
+
+  insert(index, newValue) {
+    // accept an index and a value
+    // create a new node with this value, and point it at the node currently at this index
+    // change the node one before this index so that it now points to this new node
+    if (index < 0 || index > this.length) return false;
+    if (index === this.length) !!this.push(newValue); //double bang converts return value to boolean
+    if (index === 0) !!this.unshift(newValue);
+
+    let nodeBeforeInsertionPoint = this.get(index - 1);
+    let nodeAtInsertionPoint = nodeBeforeInsertionPoint.next;
+    let newNode = new Node(newValue);
+    newNode.next = nodeAtInsertionPoint;
+    nodeBeforeInsertionPoint.next = newNode;
+    this.length++;
+    return true;
+  }
+
+  remove(index) {
+    if (index < 0 || index >= this.length) return false;
+    if (index === 0) return !!this.shift;
+    if (index === this.length - 1) return !!this.pop;
+    let nodeBeforeDelete = this.get(index - 1);
+    let nodeToDelete = nodeBeforeDelete.next;
+    let nodeAfterDelete = nodeToDelete.next;
+    nodeBeforeDelete.next = nodeAfterDelete;
+    this.length--;
+    return true;
+  }
 }
 
+// test the class methods
 let myList = new SinglyLinkedList();
 myList.push('hi');
 myList.push('how');
@@ -104,3 +158,9 @@ console.log(myList);
 
 console.log(myList.unshift('something new'));
 console.log(myList.unshift('another thing'));
+console.log(myList.get(1));
+console.log(myList.set(1, 'changed value!!!'));
+myList.insert(1, 'this was inserted yo');
+console.log(myList);
+myList.remove(1);
+console.log(myList);
