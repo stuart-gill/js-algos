@@ -39,7 +39,7 @@ class SinglyLinkedList {
     // decrement length
     // assign tail to new tail
     if (this.length === 0) return undefined;
-    let returnVal = this.tail;
+    let oldTail = this.tail;
     let penultimate = this.head;
     let ultimate = penultimate;
     while (ultimate.next) {
@@ -53,7 +53,39 @@ class SinglyLinkedList {
       this.head = null;
       this.tail = null;
     }
-    return returnVal;
+    return oldTail;
+  }
+
+  shift() {
+    // should remove and return head
+    // decrement length
+    // assign new head
+    if (this.length === 0) return undefined;
+    let oldHead = this.head;
+    this.head = this.head.next;
+    this.length--;
+    if (this.length === 0) {
+      this.tail = null;
+    }
+    // delink old head from the list
+    oldHead.next = null;
+    return oldHead;
+  }
+
+  unshift(value) {
+    // should add value and return array
+    // increment length
+    // reassign head
+    let newHead = new Node(value);
+    if (!this.head && !this.tail) {
+      this.head = newHead;
+      this.tail = newHead;
+    } else {
+      newHead.next = this.head;
+      this.head = newHead;
+    }
+    this.length++;
+    return this;
   }
 }
 
@@ -62,10 +94,13 @@ myList.push('hi');
 myList.push('how');
 myList.push('are');
 myList.push('you');
-console.log(myList.pop());
-console.log(myList.pop());
-console.log(myList.pop());
+console.log(myList.shift());
+console.log(myList.shift());
+console.log(myList.shift());
 console.log(myList);
 
-console.log(myList.pop());
+console.log(myList.shift());
 console.log(myList);
+
+console.log(myList.unshift('something new'));
+console.log(myList.unshift('another thing'));
