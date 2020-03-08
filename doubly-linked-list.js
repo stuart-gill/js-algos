@@ -60,12 +60,46 @@ class DoublyLinkedList {
     this.length--;
     return firstNode;
   }
+
+  unshift(value) {
+    let newest = new Node(value);
+    this.length++;
+    if (!this.head && !this.tail) {
+      this.head = newest;
+      this.tail = newest;
+    } else {
+      this.head.previous = newest;
+      newest.next = this.head;
+      this.head = newest;
+    }
+    return this;
+  }
+
+  get(index) {
+    if (index >= this.length || index < 0) return undefined;
+    let current;
+    if (index / this.length < 0.5) {
+      let counter = 0;
+      current = this.head;
+      while (counter < index) {
+        current = current.next;
+        counter++;
+      }
+    } else {
+      let counter = this.length - 1;
+      current = this.tail;
+      while (counter > index) {
+        current = current.previous;
+        counter--;
+      }
+    }
+    return current;
+  }
 }
 
 let myList = new DoublyLinkedList();
 myList.push('item one');
 myList.push('item two');
 myList.push('item three');
-console.log(myList.pop());
-console.log(myList.shift());
-console.log(myList);
+myList.unshift('unshifted this one');
+console.log(myList.get(3));
