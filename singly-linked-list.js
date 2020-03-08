@@ -131,14 +131,29 @@ class SinglyLinkedList {
 
   remove(index) {
     if (index < 0 || index >= this.length) return false;
-    if (index === 0) return !!this.shift;
-    if (index === this.length - 1) return !!this.pop;
+    if (index === 0) return this.shift;
+    if (index === this.length - 1) return this.pop;
     let nodeBeforeDelete = this.get(index - 1);
     let nodeToDelete = nodeBeforeDelete.next;
     let nodeAfterDelete = nodeToDelete.next;
     nodeBeforeDelete.next = nodeAfterDelete;
     this.length--;
-    return true;
+    return nodeToDelete;
+  }
+
+  reverse() {
+    let current = this.head;
+    this.head = this.tail;
+    this.tail = current;
+    let next;
+    let previous = null;
+    for (let i = 0; i < this.length; i++) {
+      next = current.next;
+      current.next = previous;
+      previous = current;
+      current = next;
+    }
+    return this;
   }
 }
 
@@ -161,6 +176,6 @@ console.log(myList.unshift('another thing'));
 console.log(myList.get(1));
 console.log(myList.set(1, 'changed value!!!'));
 myList.insert(1, 'this was inserted yo');
+myList.insert(1, 'also inserted');
 console.log(myList);
-myList.remove(1);
-console.log(myList);
+console.log(myList.reverse());
