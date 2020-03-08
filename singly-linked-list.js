@@ -107,7 +107,8 @@ class SinglyLinkedList {
     let selectedNode = this.get(index);
     if (!selectedNode) return false;
     selectedNode.value = newValue;
-    // why return true instead of returning the modified node?
+    // why return boolean instead of returning the modified node?
+    // better to throw exception or return nothing?
     // return true;
     return selectedNode;
   }
