@@ -12,9 +12,11 @@ class Stack {
     this.size = 0;
   }
 
+  // Stacks are always LIFO last in first out
   // for singly linked list implemented as a Stack, push and pop off the beginning of the list to keep these operations efficient
   // using "first" and "last" because "head" and "tail" are words reserved for linked lists
 
+  // push into the first element instead of last
   push(value) {
     let newNode = new Node(value);
     if (this.size === 0) {
@@ -27,7 +29,7 @@ class Stack {
     this.size++;
     return this.size;
   }
-
+  // with a Stack we pop off the first element instead of last
   pop() {
     if (this.size === 0) return null;
     let nodeToPop = this.first;
