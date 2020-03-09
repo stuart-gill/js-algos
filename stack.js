@@ -13,7 +13,7 @@ class Stack {
   }
 
   // Stacks are always LIFO last in first out
-  // for singly linked list implemented as a Stack, push and pop off the beginning of the list to keep these operations efficient
+  // for singly linked list implemented as a Stack, push and pop off the beginning of the list to keep these operations efficient (don't have to go looking for second to last elelent, which takes work with a singly linked list)
   // using "first" and "last" because "head" and "tail" are words reserved for linked lists
 
   // push into the first element instead of last

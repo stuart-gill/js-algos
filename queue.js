@@ -13,7 +13,10 @@ class Queue {
   }
   // with a Queue, push to end and shift from front (FIFO)
   // Queues are First In First Out...
-  push(value) {
+  // You could also do this with an Array using push and shift OR unshift and pop, but both of these require constant reindexing on either adding or removing elements
+
+  // using terms enqueue and dequeue rather than push and shift
+  enqueue(value) {
     let newNode = new Node(value);
     if (this.size === 0) {
       this.first = newNode;
@@ -25,26 +28,26 @@ class Queue {
     this.size++;
   }
 
-  shift() {
+  dequeue() {
     if (this.size === 0) return null;
-    let nodeToShift = this.first;
+    let nodeToDequeue = this.first;
     if (this.size === 1) {
       this.first = null;
       this.last = null;
     } else {
-      this.first = nodeToShift.next;
+      this.first = nodeToDequeue.next;
     }
     this.size--;
-    nodeToShift.next = null;
-    return nodeToShift;
+    nodeToDequeue.next = null;
+    return nodeToDequeue;
   }
 }
 
 let queue = new Queue();
-queue.push('one');
-queue.push('two');
-queue.push('three');
-queue.push('four');
+queue.enqueue('one');
+queue.enqueue('two');
+queue.enqueue('three');
+queue.enqueue('four');
 
-console.log(queue.shift());
+console.log(queue.dequeue());
 console.log(queue);
