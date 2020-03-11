@@ -5,9 +5,10 @@ class MaxBinaryHeap {
 
   // helper function
   swap(index1, index2) {
-    let temp = this.values[index1];
-    this.values[index1] = this.values[index2];
-    this.values[index2] = temp;
+    [this.values[index2], this.values[index1]] = [
+      this.values[index1],
+      this.values[index2]
+    ];
   }
 
   insert(newValue) {
