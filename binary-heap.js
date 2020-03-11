@@ -35,19 +35,24 @@ class MaxBinaryHeap {
 
   extractMax() {
     // pop the root node (max element) and restructure heap
-    // do this by swapping root with element last added to heap (which is the last element of the array)
+    // do this by swapping root with last element of arraya
+    // once that's done, swap that value down. Determine largest of two children, then swap with largest child IF child is bigger than parent.
+    // Repeat until no child is bigger
     if (this.values.length < 1) return undefined;
+    if (this.values.length === 1) return this.values.pop();
     let root = this.values[0];
     this.values[0] = this.values.pop();
     let i = 0;
     while (true) {
-      let child1 = i * 2 + 1;
-      let child2 = i * 2 + 2;
-      let greaterChild =
-        this.values[child1] > this.values[child2] ? child1 : child2;
-      if (this.values[greaterChild] > this.values[i]) {
-        this.swap(i, greaterChild);
-        i = greaterChild;
+      let childIndex1 = i * 2 + 1;
+      let childIndex2 = i * 2 + 2;
+      let child1 = this.values[childIndex1] || 0;
+      let child2 = this.values[childIndex2] || 0;
+      let greaterChildIndex = child1 > child2 ? childIndex1 : childIndex2;
+      // occasionaly this.values[greaterChildIndex] will be undefined because out of range, in which case this conditional returns false, which works in the intended fashion
+      if (this.values[greaterChildIndex] > this.values[i]) {
+        this.swap(i, greaterChildIndex);
+        i = greaterChildIndex;
       } else {
         break;
       }
@@ -65,7 +70,19 @@ maxHeap.insert(12);
 maxHeap.insert(16);
 maxHeap.insert(16);
 maxHeap.insert(167);
+maxHeap.insert(67);
+maxHeap.insert(17);
+maxHeap.insert(7);
 console.log(maxHeap.values);
+console.log(maxHeap.extractMax());
+console.log(maxHeap.extractMax());
+console.log(maxHeap.extractMax());
+console.log(maxHeap.extractMax());
+console.log(maxHeap.extractMax());
+console.log(maxHeap.extractMax());
+console.log(maxHeap.extractMax());
+console.log(maxHeap.extractMax());
+console.log(maxHeap.extractMax());
 console.log(maxHeap.extractMax());
 console.log(maxHeap.extractMax());
 console.log(maxHeap.values);
