@@ -1,4 +1,11 @@
-class MaxBinaryHeap {
+class Node {
+  constructor(value, priority) {
+    this.value = value;
+    this.priority = priority;
+  }
+}
+
+class PriorityQueue {
   constructor() {
     this.values = [];
   }
@@ -11,11 +18,10 @@ class MaxBinaryHeap {
     ];
   }
 
-  insert(newValue) {
-    if (this.values.includes(newValue)) return undefined;
-
+  enqueue(value, priority) {
+    let newNode = new Node(value, priority);
     // add the new values, then
-    this.values.push(newValue);
+    this.values.push(newNode);
     // get the index of the element just added
     let i = this.values.length - 1;
 
@@ -23,7 +29,7 @@ class MaxBinaryHeap {
     while (i > 0) {
       console.log(i);
       let parentIndex = Math.floor((i - 1) / 2);
-      if (this.values[i] > this.values[parentIndex]) {
+      if (this.values[i].priority > this.values[parentIndex].priority) {
         this.swap(i, parentIndex);
         i = parentIndex;
       } else {
@@ -34,7 +40,7 @@ class MaxBinaryHeap {
     return this.values;
   }
 
-  extractMax() {
+  dequeue() {
     // pop the root node (max element) and restructure heap
     // do this by swapping root with last element of arraya
     // once that's done, swap that value down. Determine largest of two children, then swap with largest child IF child is bigger than parent.
@@ -47,11 +53,16 @@ class MaxBinaryHeap {
     while (true) {
       let childIndex1 = i * 2 + 1;
       let childIndex2 = i * 2 + 2;
-      let child1 = this.values[childIndex1] || 0;
-      let child2 = this.values[childIndex2] || 0;
-      let greaterChildIndex = child1 > child2 ? childIndex1 : childIndex2;
-      // occasionaly this.values[greaterChildIndex] will be undefined because out of range, in which case this conditional returns false, which works in the intended fashion
-      if (this.values[greaterChildIndex] > this.values[i]) {
+      let child1 = this.values[childIndex1];
+      let child2 = this.values[childIndex2];
+      let greaterChildIndex =
+        child2 === undefined || child1.priority > child2.priority
+          ? childIndex1
+          : childIndex2;
+      if (
+        this.values[greaterChildIndex] &&
+        this.values[greaterChildIndex].priority > this.values[i].priority
+      ) {
         this.swap(i, greaterChildIndex);
         i = greaterChildIndex;
       } else {
@@ -62,28 +73,15 @@ class MaxBinaryHeap {
   }
 }
 
-let maxHeap = new MaxBinaryHeap();
-maxHeap.insert(28);
-maxHeap.insert(4);
-maxHeap.insert(6);
-maxHeap.insert(8);
-maxHeap.insert(12);
-maxHeap.insert(16);
-maxHeap.insert(16);
-maxHeap.insert(167);
-maxHeap.insert(67);
-maxHeap.insert(17);
-maxHeap.insert(7);
-console.log(maxHeap.values);
-console.log(maxHeap.extractMax());
-console.log(maxHeap.extractMax());
-console.log(maxHeap.extractMax());
-console.log(maxHeap.extractMax());
-console.log(maxHeap.extractMax());
-console.log(maxHeap.extractMax());
-console.log(maxHeap.extractMax());
-console.log(maxHeap.extractMax());
-console.log(maxHeap.extractMax());
-console.log(maxHeap.extractMax());
-console.log(maxHeap.extractMax());
-console.log(maxHeap.values);
+let ER = new PriorityQueue();
+ER.enqueue('common cold', 1);
+ER.enqueue('gunshot', 5);
+ER.enqueue('high fever', 2);
+ER.enqueue('fever', 4);
+ER.enqueue('high', 3);
+ER.enqueue('like, really high', 3);
+console.log(ER.values);
+console.log(ER.dequeue());
+console.log(ER.dequeue());
+console.log(ER.dequeue());
+console.log(ER.dequeue());
