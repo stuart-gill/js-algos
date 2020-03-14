@@ -42,6 +42,8 @@ class HashTable {
 
   keys() {
     // return all keys
+
+    // flatten one layer of arrays
     let flattenedKeyMap = this.keyMap.flat(1);
     let keys = [];
     for (let e of flattenedKeyMap) {
