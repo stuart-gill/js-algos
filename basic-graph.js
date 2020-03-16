@@ -56,6 +56,8 @@ class Graph {
   }
 
   //use a stack for depth first-- last in, first out
+  // stack is implimented with an array using pop() and push
+  // you could also move the if statement down to the neighbor loop to avoid adding already visited vertices to the stack, but it works either way
   depthFirstIterativeTraversal(initialVertex) {
     let vertexList = [];
     let visited = {};
@@ -76,6 +78,7 @@ class Graph {
   }
 
   // use a queue for breadth first-- first in, first out
+  // queue is implimented with an array using shift() and push()
   breadthFirstTraversal(initialVertex) {
     let vertexList = [];
     let visited = {};
