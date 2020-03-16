@@ -55,6 +55,7 @@ class Graph {
     return vertexList;
   }
 
+  //use a stack for depth first-- last in, first out
   depthFirstIterativeTraversal(initialVertex) {
     let vertexList = [];
     let visited = {};
@@ -71,6 +72,27 @@ class Graph {
         }
       }
     }
+    return vertexList;
+  }
+
+  // use a queue for breadth first-- first in, first out
+  breadthFirstTraversal(initialVertex) {
+    let vertexList = [];
+    let visited = {};
+    let queue = [initialVertex];
+    let vertex;
+
+    while (queue.length > 0) {
+      vertex = queue.shift();
+      if (!visited[vertex]) {
+        vertexList.push(vertex);
+        visited[vertex] = true;
+        for (const neighbor of this.adjacencyList[vertex]) {
+          queue.push(neighbor);
+        }
+      }
+    }
+
     return vertexList;
   }
 }
@@ -103,3 +125,4 @@ graph.addEdge('E', 'F');
 console.log(graph.adjacencyList);
 console.log(graph.depthFirstRecursiveTraversal('A'));
 console.log(graph.depthFirstIterativeTraversal('A'));
+console.log(graph.breadthFirstTraversal('A'));
