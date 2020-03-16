@@ -36,6 +36,7 @@ class Graph {
   depthFirstRecursiveTraversal(initialVertex) {
     let vertexList = [];
     let adjacencyList = this.adjacencyList;
+
     let visited = {};
 
     function dfs(v) {
@@ -44,18 +45,32 @@ class Graph {
       visited[v] = true;
       console.log('vertex ' + v);
       console.log(adjacencyList[v]);
-      // Why does a for-of loop fail here? Call stack is weird
-      // for (const neighbor of adjacencyList[v]) {
-      //   console.log(neighbor);
-      //   if (!visited[neighbor]) return dfs(neighbor);
-      // }
-      adjacencyList[v].forEach(neighborElement => {
-        console.log(neighborElement);
-        if (!visited[neighborElement]) return dfs(neighborElement);
-      });
+      for (const neighbor of adjacencyList[v]) {
+        console.log(neighbor);
+        if (!visited[neighbor]) dfs(neighbor);
+      }
     }
     dfs(initialVertex);
 
+    return vertexList;
+  }
+
+  depthFirstIterativeTraversal(initialVertex) {
+    let vertexList = [];
+    let visited = {};
+    let stack = [initialVertex];
+    let vertex;
+
+    while (stack.length > 0) {
+      vertex = stack.pop();
+      if (!visited[vertex]) {
+        vertexList.push(vertex);
+        visited[vertex] = true;
+        for (const neighbor of this.adjacencyList[vertex]) {
+          stack.push(neighbor);
+        }
+      }
+    }
     return vertexList;
   }
 }
@@ -76,5 +91,15 @@ graph.addEdge('C', 'E');
 graph.addEdge('D', 'E');
 graph.addEdge('D', 'F');
 graph.addEdge('E', 'F');
+
+//          A
+//        /   \
+//       B     C
+//       |     |
+//       D --- E
+//        \   /
+//          F
+
 console.log(graph.adjacencyList);
 console.log(graph.depthFirstRecursiveTraversal('A'));
+console.log(graph.depthFirstIterativeTraversal('A'));
