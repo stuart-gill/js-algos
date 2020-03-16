@@ -17,24 +17,25 @@ class WeightedGraph {
     let priorityQueue = new PriorityQueue();
     const adjacencyList = this.adjacencyList;
     for (const vertex in this.adjacencyList) {
-      distances[vertex] = Infinity;
+      distances[vertex] = vertex === v1 ? 0 : Infinity; //starting element always has 0 distance from itself, others set at Infinity
       previous[vertex] = null;
-    }
-    distances[v1] = 0; //starting element always has 0 distance from itself
-    for (const vertex in this.adjacencyList) {
-      priorityQueue.enqueue(vertex, distances[vertex]); //enqueue all vertices
+      priorityQueue.enqueue(vertex, distances[vertex]);
     }
     let currentVertex;
+    // console.log(distances);
     console.log(priorityQueue);
 
     while (priorityQueue.values.length > 0) {
       currentVertex = priorityQueue.dequeue().val;
+      console.log('current vertex ' + currentVertex);
       if (currentVertex === v2) return distances;
       for (const neighbor of adjacencyList[currentVertex]) {
-        if (neighbor.weight < distances[neighbor.vertex]) {
-          distances[neighbor.vertex] = neighbor.weight;
+        console.log(neighbor);
+        let candidateWeight = distances[currentVertex] + neighbor.weight;
+        if (candidateWeight < distances[neighbor.vertex]) {
+          distances[neighbor.vertex] = candidateWeight;
           previous[neighbor] = currentVertex;
-          priorityQueue.enqueue(neighbor, neighbor.weight);
+          priorityQueue.enqueue(neighbor.vertex, candidateWeight);
         }
       }
     }
@@ -59,14 +60,21 @@ class PriorityQueue {
   }
 }
 
-let graph = new WeightedGraph();
+var graph = new WeightedGraph();
 graph.addVertex('A');
 graph.addVertex('B');
 graph.addVertex('C');
 graph.addVertex('D');
-graph.addEdge('A', 'B', 5);
-graph.addEdge('A', 'C', 4);
-graph.addEdge('B', 'C', 3);
-graph.addEdge('C', 'D', 9);
-console.log(graph.adjacencyList);
-console.log(graph.dijkstra('A', 'D'));
+graph.addVertex('E');
+graph.addVertex('F');
+
+graph.addEdge('A', 'B', 4);
+graph.addEdge('A', 'C', 2);
+graph.addEdge('B', 'E', 3);
+graph.addEdge('C', 'D', 2);
+graph.addEdge('C', 'F', 4);
+graph.addEdge('D', 'E', 3);
+graph.addEdge('D', 'F', 1);
+graph.addEdge('E', 'F', 1);
+
+console.log(graph.dijkstra('A', 'E'));
