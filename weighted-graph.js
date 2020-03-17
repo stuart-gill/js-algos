@@ -74,73 +74,78 @@ class WeightedGraph {
 //   }
 // }
 
-class PriorityQueue {
-  constructor() {
-    this.values = [];
-  }
-  enqueue(val, priority) {
-    let newNode = new Node(val, priority);
-    this.values.push(newNode);
-    this.bubbleUp();
-  }
-  bubbleUp() {
-    let idx = this.values.length - 1;
-    const element = this.values[idx];
-    while (idx > 0) {
-      let parentIdx = Math.floor((idx - 1) / 2);
-      let parent = this.values[parentIdx];
-      if (element.priority >= parent.priority) break;
-      this.values[parentIdx] = element;
-      this.values[idx] = parent;
-      idx = parentIdx;
-    }
-  }
-  dequeue() {
-    const min = this.values[0];
-    const end = this.values.pop();
-    if (this.values.length > 0) {
-      this.values[0] = end;
-      this.sinkDown();
-    }
-    return min;
-  }
-  sinkDown() {
-    let idx = 0;
-    const length = this.values.length;
-    const element = this.values[0];
-    while (true) {
-      let leftChildIdx = 2 * idx + 1;
-      let rightChildIdx = 2 * idx + 2;
-      let leftChild, rightChild;
-      let swap = null;
-
-      if (leftChildIdx < length) {
-        leftChild = this.values[leftChildIdx];
-        if (leftChild.priority < element.priority) {
-          swap = leftChildIdx;
-        }
-      }
-      if (rightChildIdx < length) {
-        rightChild = this.values[rightChildIdx];
-        if (
-          (swap === null && rightChild.priority < element.priority) ||
-          (swap !== null && rightChild.priority < leftChild.priority)
-        ) {
-          swap = rightChildIdx;
-        }
-      }
-      if (swap === null) break;
-      this.values[idx] = this.values[swap];
-      this.values[swap] = element;
-      idx = swap;
-    }
-  }
-}
-
 class Node {
   constructor(val, priority) {
     this.val = val;
     this.priority = priority;
+  }
+}
+
+class PriorityQueue {
+  constructor() {
+    this.values = [];
+  }
+
+  // helper function
+  swap(index1, index2) {
+    [this.values[index2], this.values[index1]] = [
+      this.values[index1],
+      this.values[index2]
+    ];
+  }
+
+  enqueue(value, priority) {
+    let newNode = new Node(value, priority);
+    // add the new values, then
+    this.values.push(newNode);
+    // get the index of the element just added
+    let i = this.values.length - 1;
+
+    // now bubble the element up so that it isnt' smaller than any of its parents
+    while (i > 0) {
+      console.log(i);
+      let parentIndex = Math.floor((i - 1) / 2);
+      if (this.values[i].priority < this.values[parentIndex].priority) {
+        this.swap(i, parentIndex);
+        i = parentIndex;
+      } else {
+        break;
+      }
+    }
+
+    return this.values;
+  }
+
+  dequeue() {
+    // pop the root node (max element) and restructure heap
+    // do this by swapping root with last element of arraya
+    // once that's done, swap that value down. Determine largest of two children, then swap with smallest child IF child is smaller than parent.
+    // Repeat until no child is bigger
+    if (this.values.length < 1) return undefined;
+    if (this.values.length === 1) return this.values.pop();
+    let oldRoot = this.values[0];
+    this.values[0] = this.values.pop();
+    let i = 0;
+    while (true) {
+      let childIndex1 = i * 2 + 1;
+      let childIndex2 = i * 2 + 2;
+      let child1 = this.values[childIndex1];
+      let child2 = this.values[childIndex2];
+      let lesserChildIndex =
+        child2 === undefined || child1.priority < child2.priority
+          ? childIndex1
+          : childIndex2;
+      if (
+        this.values[lesserChildIndex] &&
+        this.values[lesserChildIndex].priority < this.values[i].priority
+      ) {
+        this.swap(i, lesserChildIndex);
+        i = lesserChildIndex;
+      } else {
+        break;
+      }
+    }
+    return oldRoot;
   }
 }
 
