@@ -12,6 +12,7 @@ class WeightedGraph {
     }
   }
   dijkstra(v1, v2) {
+    let path = [];
     let distances = {};
     let previous = {};
     let priorityQueue = new PriorityQueue();
@@ -27,20 +28,34 @@ class WeightedGraph {
 
     while (priorityQueue.values.length > 0) {
       currentVertex = priorityQueue.dequeue().val;
-      console.log('current vertex ' + currentVertex);
-      if (currentVertex === v2) return distances;
+      // once you get to the destination vertex (v2), document the path from v2 back to v1 using the previous object
+      // break, since you've found what you're looking for
+      if (currentVertex === v2) {
+        while (previous[currentVertex]) {
+          path.push(currentVertex);
+          currentVertex = previous[currentVertex];
+        }
+        path.push(v1); //have to add this one manually
+        console.log(distances);
+        break;
+      }
       for (const neighbor of adjacencyList[currentVertex]) {
         console.log(neighbor);
         let candidateWeight = distances[currentVertex] + neighbor.weight;
         if (candidateWeight < distances[neighbor.vertex]) {
           distances[neighbor.vertex] = candidateWeight;
-          previous[neighbor] = currentVertex;
+          previous[neighbor.vertex] = currentVertex;
           priorityQueue.enqueue(neighbor.vertex, candidateWeight);
         }
       }
     }
 
-    return distances;
+    console.log(
+      `shortest path from ${v1} to ${v2} is ${path
+        .reverse()
+        .join('-')}, with a total distance of ${distances[v2]} `
+    );
+    return path;
   }
 }
 
@@ -78,3 +93,4 @@ graph.addEdge('D', 'F', 1);
 graph.addEdge('E', 'F', 1);
 
 console.log(graph.dijkstra('A', 'E'));
+console.log(graph.dijkstra('A', 'C'));
