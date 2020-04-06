@@ -118,8 +118,8 @@ class SinglyLinkedList {
     // create a new node with this value, and point it at the node currently at this index
     // change the node one before this index so that it now points to this new node
     if (index < 0 || index > this.length) return false;
-    if (index === this.length) !!this.push(newValue); //double bang converts return value to boolean
-    if (index === 0) !!this.unshift(newValue);
+    if (index === this.length) return !!this.push(newValue); //double bang converts return value to boolean
+    if (index === 0) return !!this.unshift(newValue);
 
     let nodeBeforeInsertionPoint = this.get(index - 1);
     let nodeAtInsertionPoint = nodeBeforeInsertionPoint.next;
