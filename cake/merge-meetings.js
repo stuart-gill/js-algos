@@ -17,9 +17,30 @@ const testMeetings = [
   { startTime: 9, endTime: 10 },
 ];
 
+// most basic case
 const testMeetings2 = [
   { startTime: 1, endTime: 3 },
   { startTime: 2, endTime: 4 },
+];
+
+// meetings don't overlap but should be merged
+const testMeetings3 = [
+  { startTime: 1, endTime: 2 },
+  { startTime: 2, endTime: 3 },
+];
+
+// one meeting subsumed in another
+const testMeetings4 = [
+  { startTime: 2, endTime: 3 },
+  { startTime: 1, endTime: 5 },
+];
+
+// all meetings subsumed
+const testMeetings5 = [
+  { startTime: 1, endTime: 10 },
+  { startTime: 2, endTime: 6 },
+  { startTime: 3, endTime: 5 },
+  { startTime: 7, endTime: 9 },
 ];
 
 function mergeRanges(allMeetings) {
@@ -70,9 +91,38 @@ function mergeRanges(allMeetings) {
     }
     console.log(merged);
   }
-
   return merged;
 }
+mergeRanges(testMeetings2);
+mergeRanges(testMeetings);
+mergeRanges(testMeetings3);
+mergeRanges(testMeetings4);
+mergeRanges(testMeetings5);
+console.log('+++++++++++++++++++++++++++++++++++');
 
-console.log(mergeRanges(testMeetings2));
-console.log(mergeRanges(testMeetings));
+// try again with O (n Lg n) time instead of nested loops
+// much simpler!!
+// sorting the array first removes a lot of the testing necessary, and removes the need to run two loops
+// sort of a greedy algorithm
+
+function merge(allMeetings) {
+  allMeetings.sort((x, y) => x.startTime - y.startTime);
+
+  let mergedMeetings = [allMeetings[0]];
+
+  for (let meeting of allMeetings) {
+    let currentMerge = mergedMeetings[mergedMeetings.length - 1];
+    if (meeting.startTime <= currentMerge.endTime) {
+      currentMerge.endTime = Math.max(meeting.endTime, currentMerge.endTime);
+    } else {
+      mergedMeetings.push(meeting);
+    }
+    console.log(mergedMeetings);
+  }
+}
+
+merge(testMeetings2);
+merge(testMeetings);
+merge(testMeetings3);
+merge(testMeetings4);
+merge(testMeetings5);
