@@ -33,3 +33,26 @@ function isPalindrome(word) {
 console.log(isPalindrome('civic'));
 console.log(isPalindrome('civiccc'));
 console.log(isPalindrome('civil'));
+
+// alternate version using set... only adds characters to set if they are unpaired, removes them once they are paired!
+
+function hasPalindromePermutation(theString) {
+  // Track characters we've seen an odd number of times
+  const unpairedCharacters = new Set();
+
+  for (let char of theString) {
+    if (unpairedCharacters.has(char)) {
+      unpairedCharacters.delete(char);
+    } else {
+      unpairedCharacters.add(char);
+    }
+  }
+
+  // The string has a palindrome permutation if it
+  // has one or zero characters without a pair
+  return unpairedCharacters.size <= 1;
+}
+
+console.log(hasPalindromePermutation('civic'));
+console.log(hasPalindromePermutation('civiccc'));
+console.log(hasPalindromePermutation('civil'));
