@@ -7,6 +7,7 @@ function mergeArrays(arr1, arr2) {
   let merged = [];
   let totalElements = arr1.length + arr2.length;
   while (merged.length < totalElements) {
+    // extra conditions so you don't try to test non-existant array indices
     if (arr1.length && (arr1[0] < arr2[0] || !arr2.length)) {
       merged.push(arr1.shift());
     } else {
@@ -23,6 +24,7 @@ function mergeNonMutating(arr1, arr2) {
   let totalElements = arr1.length + arr2.length;
 
   while (index1 + index2 < totalElements) {
+    // extra conditions so you don't try to test non-existant array indices
     if (
       index1 < arr1.length &&
       (arr1[index1] < arr2[index2] || index2 >= arr2.length)
