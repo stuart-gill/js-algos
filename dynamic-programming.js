@@ -1,4 +1,4 @@
-const recursiveFibonacci = n => {
+const recursiveFibonacci = (n) => {
   if (n <= 2) return 1;
   return recursiveFibonacci(n - 1) + recursiveFibonacci(n - 2);
 };
@@ -15,7 +15,7 @@ console.log(memoizedFibonacci(45));
 
 // tabulation is like memoization but building up from the bottom rather than top down.
 // also not recursive
-const tabulatedFibonacci = n => {
+const tabulatedFibonacci = (n) => {
   let fibSeq = [0, 1, 1];
   for (let i = 3; i <= n; i++) {
     fibSeq[i] = fibSeq[i - 1] + fibSeq[i - 2];
@@ -24,3 +24,22 @@ const tabulatedFibonacci = n => {
 };
 
 console.log(tabulatedFibonacci(45));
+
+// lightweight bottom up fibonacci per interview cake-- basically the same as tabulated, but maintaining only three integer variables instead of an array
+const fibLight = (n) => {
+  if (n < 1) console.log("we're starting with 1");
+  if (n === 1 || n === 2) return 1;
+
+  let twoAgo = 1;
+  let oneAgo = 1;
+  let current;
+
+  for (let i = 2; i < n; i++) {
+    current = oneAgo + twoAgo;
+    twoAgo = oneAgo;
+    oneAgo = current;
+  }
+  return current;
+};
+
+console.log(fibLight(45));
