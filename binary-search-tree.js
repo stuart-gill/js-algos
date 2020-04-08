@@ -160,6 +160,79 @@ class BinarySearchTree {
     return true;
   }
 
+  // perform check to make sure tree is valid
+  // have to check not only that left node is less than node and right node is greater than node, but that bounds travel appropriately
+  // use DFS with call stack
+  isValidBST() {
+    // each node will be represented as an object
+    let visitedStack = [];
+
+    visitedStack.push({
+      node: this.root,
+      lowerBound: Number.NEGATIVE_INFINITY,
+      uppperBound: Number.INFINITY,
+    });
+
+    while (visitedStack.length) {
+      const { node, lowerBound, upperBound } = visitedStack.pop();
+
+      if (node.value < lowerBound) return false;
+      if (node.value > upperBound) return false;
+      if (node.left) {
+        visitedStack.push({
+          node: node.left,
+          lowerBound: lowerBound,
+          uppperBound: node.value,
+        });
+      }
+      if (node.right) {
+        visitedStack.push({
+          node: node.right,
+          lowerBound: node.value,
+          uppperBound: upperBound,
+        });
+      }
+    }
+
+    // if we loop through everything with no false, then tree is properly sorted
+    return true;
+  }
+
+  // find second largest node
+  // thinking: travel down right side of tree. Last element is largest
+  // keep track of previous node at all times
+  // if last element has no children, it is the largest and its parent is 2nd largest
+  // if last element has only a left child, it the largest and the 2nd largest will be the largest in its left tree.
+  // rather than keeping track of parent node, just look ahead via right.right to see if child node has children
+  findSecondLargest() {
+    // recursive find largest helper function, looks cleaner...
+    function recursiveLargest(node) {
+      if (!node.right) return node.value;
+      recursiveLargest(node.right);
+    }
+
+    // ...but iterative version uses less space
+    function iterativeLargest(node) {
+      let current = node;
+      while (current) {
+        if (!current.right) {
+          // console.log('second largest is ' + current.value);
+          return current.value;
+        } else current = current.right;
+      }
+    }
+
+    // if right child has no children, we are at the 2nd largest node
+    let current = this.root;
+    while (current) {
+      if (current.right && !current.right.right && !current.right.left) {
+        return current.value;
+      } else if (current.right) {
+        current = current.right;
+      } else return iterativeLargest(current.left);
+    }
+  }
+
   // this one is harder to visualize... go all the way down left side, then add left most leaf, then add one up from that leaf, then add right side of that node, then go back up...
   // in this case, the root node will be about in the middle of the returned array, because you add nodes as you backtrack
   depthFirstSearchInOrder() {
@@ -186,6 +259,7 @@ tree.insert(7);
 tree.insert(17);
 tree.insert(19);
 tree.insert(21);
+tree.insert(23);
 console.log(tree);
 console.log(tree.recursiveFind(15));
 console.log(tree.recursiveFind(1));
@@ -194,3 +268,5 @@ console.log('depth first pre order: ' + tree.depthFirstSearchPreOrder());
 console.log('depth first post order: ' + tree.depthFirstSearchPostOrder());
 console.log('depth first in order: ' + tree.depthFirstSearchInOrder());
 console.log('is super balanced: ' + tree.isSuperBalanced());
+console.log('is valid BST: ' + tree.isValidBST());
+console.log('second largest element is ' + tree.findSecondLargest());
