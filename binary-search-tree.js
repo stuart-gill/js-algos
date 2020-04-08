@@ -119,6 +119,47 @@ class BinarySearchTree {
     return visited;
   }
 
+  // a function to test to see if the tree is "superbalanced", made up term for interview cake.
+  // https://www.interviewcake.com/question/javascript/balanced-binary-tree?course=fc1&section=trees-graphs
+  // test to see if any two leaf nodes are more than one level separated
+  // basing it on depthFirstSearchPostOrder because depth first, especially post order, gets you to leaf nodes quickest
+  // trying with LIFO stack iterative solution
+
+  isSuperBalanced() {
+    let visited = [];
+    let leafDepths = [];
+
+    // push root and its depth to initialize visited
+    visited.push([this.root, 0]);
+
+    while (visited.length) {
+      const [currentNode, currentDepth] = visited.pop();
+
+      // if leaf node:
+      if (!currentNode.left && !currentNode.right) {
+        // only add leaf depth if it isn't currently stored
+        if (!leafDepths.includes(currentDepth)) {
+          leafDepths.push(currentDepth);
+          // if there are more than two depths, leaf nodes are more than 1 level separated
+          if (leafDepths.length > 2) return false;
+          // if there are only two leaf depths but they're more than 1 level separated:
+          if (
+            (leafDepths.length === 2 && leafDepths[1] - leafDepths[0] > 1) ||
+            leafDepths[0] - leafDepths[1] > 1
+          )
+            return false;
+        }
+      }
+      // if not leaf node, push children onto stack, along with their depths
+      if (currentNode.left) visited.push([currentNode.left, currentDepth + 1]);
+      if (currentNode.right)
+        visited.push([currentNode.right, currentDepth + 1]);
+    }
+
+    // if never false, return true:
+    return true;
+  }
+
   // this one is harder to visualize... go all the way down left side, then add left most leaf, then add one up from that leaf, then add right side of that node, then go back up...
   // in this case, the root node will be about in the middle of the returned array, because you add nodes as you backtrack
   depthFirstSearchInOrder() {
@@ -142,6 +183,9 @@ tree.insert(5);
 tree.insert(12);
 console.log(tree);
 tree.insert(7);
+tree.insert(17);
+tree.insert(19);
+tree.insert(21);
 console.log(tree);
 console.log(tree.recursiveFind(15));
 console.log(tree.recursiveFind(1));
@@ -149,3 +193,4 @@ console.log('breadth first search: ' + tree.breadthFirstSearch());
 console.log('depth first pre order: ' + tree.depthFirstSearchPreOrder());
 console.log('depth first post order: ' + tree.depthFirstSearchPostOrder());
 console.log('depth first in order: ' + tree.depthFirstSearchInOrder());
+console.log('is super balanced: ' + tree.isSuperBalanced());
