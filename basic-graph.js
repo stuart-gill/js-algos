@@ -17,10 +17,10 @@ class Graph {
   removeEdge(v1, v2) {
     if (this.adjacencyList[v1] && this.adjacencyList[v2]) {
       this.adjacencyList[v1] = this.adjacencyList[v1].filter(
-        element => element != v2
+        (element) => element != v2
       );
       this.adjacencyList[v2] = this.adjacencyList[v2].filter(
-        element => element != v1
+        (element) => element != v1
       );
     }
   }
@@ -43,10 +43,7 @@ class Graph {
       if (!v) return null;
       vertexList.push(v);
       visited[v] = true;
-      console.log('vertex ' + v);
-      console.log(adjacencyList[v]);
       for (const neighbor of adjacencyList[v]) {
-        console.log(neighbor);
         if (!visited[neighbor]) dfs(neighbor);
       }
     }
