@@ -1,6 +1,7 @@
-//homebrew implementation of graph coloring question from interview cake...
+// homebrew implementation of graph coloring question from interview cake...
 // based the graph on basic graph from Colt Steele algo class, but added a vertices array to Graph
-// and made nodes objects so they could have color property
+// and made verticies objects so they could have color property
+// adjacency list has vertex names as keys and whole vertices objects as values, so you can see what colors have been used
 
 class Graph {
   constructor() {
@@ -9,12 +10,19 @@ class Graph {
   }
 
   addVertex(vertex) {
-    if (!this.adjacencyList[vertex.name]) this.adjacencyList[vertex.name] = [];
-    if (!this.vertices.includes(vertex)) this.vertices.push(vertex);
+    if (this.vertices.includes(vertex) || this.adjacencyList[vertex.name])
+      console.log('a vertex by this name already exists');
+    else {
+      // add vertex name as key to adjacency object
+      this.adjacencyList[vertex.name] = [];
+      // add vertex to vertices array
+      this.vertices.push(vertex);
+    }
   }
 
   addEdge(v1, v2) {
-    if (this.adjacencyList[v1.name] && this.adjacencyList[v2.name]) {
+    if (v1.name == v2.name) console.log('no loops allowed');
+    else if (this.adjacencyList[v1.name] && this.adjacencyList[v2.name]) {
       this.adjacencyList[v1.name].push(v2);
       this.adjacencyList[v2.name].push(v1);
     }
@@ -25,9 +33,13 @@ class Graph {
     const colors = ['red', 'blue', 'green', 'yellow'];
     for (let vertex of this.vertices) {
       let forbiddenColors = [];
+      // make a list of neighbors' colors
       for (let neighbor of this.adjacencyList[vertex.name]) {
-        forbiddenColors.push(neighbor.color);
+        if (neighbor.color != null) {
+          forbiddenColors.push(neighbor.color);
+        }
       }
+      // use first color that isn't forbidden
       for (let currentColor of colors) {
         if (!forbiddenColors.includes(currentColor)) {
           vertex.color = currentColor;
