@@ -55,6 +55,7 @@ class Graph {
   //use a stack for depth first-- last in, first out
   // stack is implimented with an array using pop() and push
   // you could also move the if statement down to the neighbor loop to avoid adding already visited vertices to the stack, but it works either way
+  // could also just check vertexList.includes(vertex) rather than using visited object, but this might take more time?
   depthFirstIterativeTraversal(initialVertex) {
     let vertexList = [];
     let visited = {};

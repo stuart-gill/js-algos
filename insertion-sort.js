@@ -7,6 +7,7 @@ function insertionSort(arr) {
     currentVal = arr[i];
     console.log(`current val=${currentVal}`);
     for (var j = i - 1; j >= 0; j--) {
+      // if properly sorted, break inner loop
       if (arr[j] < currentVal) {
         console.log('BREAK!');
         break;

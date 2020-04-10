@@ -6,6 +6,7 @@ function merge(arr1, arr2) {
   let ans = [];
   let i = 0;
   let j = 0;
+  // if we still have unsorted elements in arr1 AND arr2
   while (i < arr1.length && j < arr2.length) {
     if (arr1[i] < arr2[j]) {
       ans.push(arr1[i]);
@@ -15,6 +16,8 @@ function merge(arr1, arr2) {
       j++;
     }
   }
+  // use any remaining elements from arr 1 or arr 2. Only one of these while loops (maximum) may run
+
   while (i < arr1.length) {
     ans.push(arr1[i]);
     i++;
